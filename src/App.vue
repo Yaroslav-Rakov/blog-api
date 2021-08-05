@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
+    <div id="nav" class="bg-dark">
+      <!-- <router-link to="/">Home</router-link> | -->
       <router-link to="/dashboard">Dashboard</router-link>
+      <router-link class="fl-right" to="/sign-up">Sign Up</router-link>
+      <router-link class="fl-right" to="/login">Login</router-link>
     </div>
     <router-view />
   </div>
@@ -22,11 +24,18 @@
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #ffffff;
+    margin-right: 20px;
 
     &.router-link-exact-active {
       color: #42b983;
     }
   }
+}
+
+.fl-right{
+
+  float: right;
+
 }
 </style>
