@@ -1,8 +1,8 @@
 <template>
-    <div class="light-blue">
+    <div>
         <h1>API app</h1><br /><br />
     <div>
-    <div class="margin-auto">
+    <div class="margin-auto-20">
             <h2>Get user by ID: </h2>
          <b-form-input class="m-bot" v-model="userById" placeholder="Type ID"></b-form-input>
             <div class="mb-3">
@@ -14,7 +14,7 @@
 
   </div>
 
-        <div class="margin-auto">
+        <div class="margin-auto-20">
             <h2>Get post by ID: </h2>
          <b-form-input class="m-bot" v-model="postById" placeholder="Type ID"></b-form-input>
             <div class="mb-3">
@@ -34,9 +34,9 @@
                     <b-button v-b-toggle.my-collapse-users v-on:click="getUsersClick">Try it</b-button>
                 </div>
                 <b-collapse id="my-collapse-users">
-                    <b-card class="light-blue" title="Response">
+                    <b-card title="Response">
                         <b-list-group>
-                            <b-list-group-item class="margin-auto" v-for="(item, index) in getUsers" :key="item">
+                            <b-list-group-item class="margin-auto light-blue" v-for="(item, index) in getUsers" :key="item">
                                 <br /><strong>{{"User #"+parseInt(index+1)}}</strong>
                                 <br />{{'id: ' +item._id }}<br />
                                 {{'email: ' +item.email}}<br />
@@ -55,9 +55,9 @@
                     <b-button v-b-toggle.my-collapse-posts v-on:click="getPostsClick">Try it</b-button>
                 </div>
                 <b-collapse id="my-collapse-posts">
-                    <b-card class="light-blue" title="Response:">
+                    <b-card title="Response:">
                         <b-list-group>
-                            <b-list-group-item class="margin-auto" v-for="(item, index) in getPosts" :key="item">
+                            <b-list-group-item class="margin-auto light-blue" v-for="(item, index) in getPosts" :key="item">
                                 <br /><strong>{{"Post #"+parseInt(index+1)}}</strong>
                                 <br />{{'id: ' +item._id }}<br />
                                 {{'title: ' +item.title}}<br />
@@ -126,6 +126,10 @@
 </script>
 
 <style>
+    .margin-auto-20 {
+        margin: 0 auto;
+        width: 20%
+    }
 
     .margin-auto {
         margin: 0 auto;

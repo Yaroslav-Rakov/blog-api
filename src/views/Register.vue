@@ -1,48 +1,57 @@
 <template>
 <div id="app">
-  <div class="container ">
-    <form>
-      <div class="row margin-auto">
-        <div class="for-group">
+    <div class="container ">
+        <form>
+            <div class="row margin-auto">
+                <div class="for-group">
 
-          <h1>Signup</h1>
-          <div class="form-group">
-            <label for="firstName">Name</label>
-            <input type="text" id="firstName" class="form-control" placeholder="Enter name" v-model="userData.name">
-          </div>
-          <!-- <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" class="form-control" v-model="userData.lastName">
-          </div> -->
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" id="email" class="form-control" v-model="userData.email">
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" class="form-control" v-model="userData.password">
-            <p>
-              <!-- {{ userData.password }} -->
-            </p>
-          </div>
+                    <h1>Signup</h1>
+                    <div class="form-group m-top">
+                        <label for="firstName">Name</label>
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter name" v-model.lazy="$v.userData.name.$model" @blur="$v.userData.name.$touch()">
+                        <p class="error" v-if="$v.userData.name.$error">This field is required!</p>
+                    </div>
+                    <!-- <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" id="lastName" class="form-control" v-model="userData.lastName">
+                </div> -->
+                    <div class="form-group m-top">
+                        <label for="email">Email</label>
+                        <input type="text" id="email" class="form-control" placeholder="Enter email" v-model.lazy="$v.userData.email.$model" @blur="$v.userData.email.$touch()">
+                        <p class="error" v-if="$v.userData.email.$error">This field is required!</p>
+                    </div>
+                    <div class="form-group m-top">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="Enter password" v-model.lazy="$v.userData.password.$model" @blur="$v.userData.password.$touch()">
+                        <p class="error" v-if="$v.userData.password.$error">Minimum 6 characters needed!</p>
+                        <p>
+                            <!-- {{ userData.password }} -->
+                        </p>
+                    </div>
 
-        </div>
-      </div>
-      <div class="row">
-        <div class="">
-          <button class="btn btn-primary" @click.prevent="createUser">Submit!
-          </button>
-        </div>
-      </div>
+                </div>
+                
+                <div class="row">
+                    
+                    <div class="">
+                        <button class="btn btn-primary" @click.prevent="createUser">
+                            Submit!
+                        </button>
+                    </div>
+                </div>
+                <div class="row m-top">
+                    <div class="error">{{errName}}</div>
+                    <div v-if="!this.userDataResponse._id">{{err}}</div>
+                    <div v-else>{{pushToLogin()}} </div>
+                </div>
 
-      <div class="row m-top">
-          <div>{{errName}}</div>
-          <div v-if="!this.userDataResponse._id">{{err}}</div>
-          <div v-else>{{pushToLogin()}} </div>
-      </div>
-    </form>
 
-  </div>
+            </div>
+        </form>
+
+
+
+    </div>
 </div>
 
     
@@ -75,12 +84,21 @@
     }
         },
 
-    validations: {
-    name: {
-      required,
-      minLength: minLength(1)
-    }
-  },
+        validations: {
+            userData: {
+                name: {
+                    required
+                },
+                email: {
+                    required
+                },
+                password: {
+                    required,
+                    minLength: minLength(6)
+                }
+            },
+        },  
+
 
         created() {
 
@@ -116,6 +134,7 @@ methods: {
 
           this.errName = '';
           this.err = error.message;
+
       }
 
     });
@@ -153,7 +172,7 @@ methods: {
 <style>
 
 .margin-auto {
-        margin: 10% auto;
+        margin: 0 auto;
         width: 30%;
 }
 
@@ -166,8 +185,12 @@ methods: {
 
 }
 
-.vertical {
+    .error {
+        color: red;
+    }
+
+/*.vertical {
     margin-bottom: 50%;
-}
+} */
 
 </style>

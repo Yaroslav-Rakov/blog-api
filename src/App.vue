@@ -2,11 +2,13 @@
   <div id="app">
     <div id="nav" class="bg-dark">
       <!-- <router-link to="/">Home</router-link> | -->
-      <router-link to="/dashboard">Dashboard</router-link>
-      <router-link class="fl-right" to="/sign-up">Sign Up</router-link>
-      <router-link class="fl-right" to="/login">Login</router-link>
+        <div>
+            <router-link class="" to="/dashboard">Dashboard</router-link>
+            <router-link class="" to="/sign-up">Sign Up</router-link>
+            <router-link class="" to="/login">Login</router-link>
+        </div>
     </div>
-    <router-view />
+    <router-view class="p-top" />
   </div>
 </template>
 
@@ -37,5 +39,15 @@
 
   float: right;
 
+}
+
+.margin-auto {
+    margin: 0 auto;
+
+}
+
+.p-top {
+
+    padding-top: 100px;
 }
 </style>
