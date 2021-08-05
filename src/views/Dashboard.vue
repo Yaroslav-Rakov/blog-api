@@ -3,25 +3,37 @@
         <h1>API app</h1><br /><br />
         <div>
             <h2>Get user by ID ({{getUser._id}}): </h2>
-            <ul>
-                <li v-for="(item, value) in getUser" :key="item">
+            <b-list-group>
+                <b-list-group-item class="margin-auto" v-for="(item, value) in getUser" :key="item">
                     {{value + ': '+item}}
-                </li>
-            </ul>
+                </b-list-group-item>
+            </b-list-group>
         </div>
         <div>
             <h2>Get last 10 posts: </h2>
-            <div id="event-handling">
-                <button v-on:click="getPostsClick">Get Posts</button>
+            <div>
+                <div class="mb-3">
+                    <b-button v-b-toggle.my-collapse v-on:click="getPostsClick">Toggle Collapse</b-button>
+                </div>
+
+                <b-collapse id="my-collapse">
+                    <b-card title="Collapsible card">
+                        <b-list-group>
+                            <b-list-group-item class="margin-auto" v-for="(item, index) in getPosts" :key="item">
+                                <br /><strong>{{"Post #"+parseInt(index+1)}}</strong>
+                                <br />{{'id: ' +item._id }}<br />
+                                {{'title: ' +item.title}}<br />
+                                {{'description: ' +item.description}}<br />
+                            </b-list-group-item>
+                        </b-list-group>
+                    </b-card>
+                </b-collapse>
             </div>
-            <ul>
-                <li v-for="(item, index) in getPosts" :key="item">
-                    <br /><strong>{{"Post #"+parseInt(index+1)}}</strong>
-                    <br />{{'id: ' +item._id }}<br />
-                    {{'title: ' +item.title}}<br />
-                    {{'description: ' +item.description}}<br />
-                </li>
-            </ul>
+
+            <!--            <div id="event-handling">
+                    <button v-on:click="getPostsClick">Get Posts</button>
+                </div>-->
+
         </div>
     </div>
 </template>
@@ -35,6 +47,7 @@
             return {
                 getUser: this.getUser,
                 getPosts: this.getPosts,
+                show: true
             }
         },
 
@@ -51,7 +64,13 @@
         methods: {
             getPostsClick() {
                 axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts")
-                    .then(response => this.getPosts = response.data);
+                    .then(response => this.getPosts = response.data)
+            },
+
+            toggle() {
+                    console.log('Toggle button clicked')
+                    this.show = !this.show
+                
 
             }
         }
@@ -64,6 +83,11 @@
 </script>
 
 <style>
+
+    .margin-auto {
+        margin: 0 auto;
+        width:20%
+    }
 
     ul {
 
