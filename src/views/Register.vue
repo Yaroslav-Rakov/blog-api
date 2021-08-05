@@ -1,21 +1,21 @@
 <template>
 <div id="app">
-  <div class="container">
+  <div class="container ">
     <form>
       <div class="row margin-auto">
         <div class="for-group">
 
           <h1>Signup</h1>
           <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" class="form-control" v-model="userData.name">
+            <label for="firstName">Name</label>
+            <input type="text" id="firstName" class="form-control" placeholder="Enter name" v-model="userData.name">
           </div>
           <!-- <div class="form-group">
             <label for="lastName">Last Name</label>
             <input type="text" id="lastName" class="form-control" v-model="userData.lastName">
           </div> -->
           <div class="form-group">
-            <label for="email">Mail</label>
+            <label for="email">Email</label>
             <input type="text" id="email" class="form-control" v-model="userData.email">
           </div>
           <div class="form-group">
@@ -36,7 +36,7 @@
       </div>
 
       <div class="row m-top">
-          <div ></div>
+          <div>{{errName}}</div>
           <div v-if="!this.userDataResponse._id">{{err}}</div>
           <div v-else>{{pushToLogin()}} </div>
       </div>
@@ -50,6 +50,8 @@
 
 <script>
     import axios from "axios"
+    import { required, minLength } from 'vuelidate/lib/validators'
+
 
     export default {
         data() {
@@ -59,6 +61,7 @@
         email: '',
         password: ''
       },
+ 
 
     userDataResponse: {
         name: '',
@@ -66,10 +69,18 @@
         password: ''
       },
 
-      err: ''
+      err: '',
+      errName: ''
     
     }
         },
+
+    validations: {
+    name: {
+      required,
+      minLength: minLength(1)
+    }
+  },
 
         created() {
 
@@ -94,8 +105,18 @@ methods: {
           const user =  this.userData;
             axios.post("https://nodejs-test-api-blog.herokuapp.com/api/v1/users", user)
             .then(response => this.userDataResponse = response.data).catch(error => {
-      this.err = error.message;
+      
       console.error("There was an error!", error);
+
+      if (!this.userData.name | !this.userData.email | !this.userData.password) {
+
+          this.errName = "All fields must be filled in!"
+
+      } else {
+
+          this.errName = '';
+          this.err = error.message;
+      }
 
     });
 
@@ -132,8 +153,8 @@ methods: {
 <style>
 
 .margin-auto {
-        margin: 0 auto;
-        width:30%
+        margin: 10% auto;
+        width: 30%;
 }
 
 .light-blue {
@@ -143,6 +164,10 @@ methods: {
 
     margin-top: 20px;
 
+}
+
+.vertical {
+    margin-bottom: 50%;
 }
 
 </style>
