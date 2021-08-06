@@ -19,6 +19,13 @@
                         <label for="email">Email</label>
                         <input type="text" id="email" class="form-control" placeholder="Enter email" v-model.lazy="$v.userData.email.$model" @blur="$v.userData.email.$touch()">
                         <p class="error" v-if="$v.userData.email.$error">This field is required!</p>
+                          <p v-if="errors.length">
+                        <b>Please correct the following error(s):</b>
+                        <ul>
+                          <li v-for="error in errors" :key="error">{{ error }}</li>
+                        </ul>
+                      </p>
+                         
                     </div>
                     <div class="form-group m-top">
                         <label for="password">Password</label>
@@ -59,12 +66,14 @@
 
 <script>
     import axios from "axios"
+    
     import { required, minLength } from 'vuelidate/lib/validators'
 
 
     export default {
         data() {
     return {
+      errors:[],
       userData: {
         name: '',
         email: '',
@@ -137,10 +146,21 @@ methods: {
 
       }
 
+      this.errors = [];
+      if(!this.validEmail(this.email) || !this.userData.name || !this.userData.password) {
+        this.errors.push("Valid email required.");        
+      }
+      if(!this.errors.length) return true;
+
     });
 
 
 
+    },
+
+    validEmail:function(email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
     },
 
                pushToLogin() {

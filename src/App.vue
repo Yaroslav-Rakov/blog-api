@@ -6,6 +6,8 @@
             <router-link class="" to="/dashboard">Dashboard</router-link>
             <router-link class="" to="/sign-up">Sign Up</router-link>
             <router-link class="" to="/login">Login</router-link>
+            <router-link class="" to="/allUsers">Users</router-link>
+            <router-link class="" to="/posts">Posts</router-link>
         </div>
     </div>
     <router-view class="p-top" />
