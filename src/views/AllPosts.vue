@@ -20,18 +20,31 @@
           <h5 style="text-align: center">{{ item.title }}</h5>
           <br />
           {{ item.description }}
-            <div class="mb-3">
-            <b-button v-on:click="getPostClick(index)">Try it</b-button>
-            <div v-if="getPost && getPost._id === getPosts[index]._id">
-              <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Title: </strong>{{getPost.title}}</b-list-group-item>
-              <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Full Text: </strong>{{getPost.fullText}}</b-list-group-item>
-              <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Description: </strong>{{getPost.description}}</b-list-group-item>
-              <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Date: </strong>{{getPost.dateCreated.substring(0, getPost.dateCreated.indexOf('T'))}}</b-list-group-item> -->
-              <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Posted by: </strong>{{getPost.postedBy}}</b-list-group-item>
-              <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Likes: </strong>{{getPost.likes.length}}</b-list-group-item> -->
-            
-            </div>
-          </div>
+        <div class="mb-3">
+            <b-link v-on:click="getPostClick(index)">See more...</b-link>
+            <!--<div v-if="getPost && getPost._id === getPosts[index]._id || toggle.includes(getPosts[index]._id)">
+                <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Title: </strong>{{getPost.title}}</b-list-group-item>
+                <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Full Text: </strong>{{getPost.fullText}}</b-list-group-item>
+                <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Description: </strong>{{getPost.description}}</b-list-group-item>-->
+                <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Date: </strong>{{getPost.dateCreated.substring(0, getPost.dateCreated.indexOf('T'))}}</b-list-group-item> -->
+                <!--<b-list-group-item class="light-blue t-align margin-auto-70"><strong>Posted by: </strong>{{getPost.postedBy}}</b-list-group-item>-->
+                <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Likes: </strong>{{getPost.likes.length}}</b-list-group-item> -->
+
+            <!--</div>-->
+
+        <div v-if="getPost  ">
+            <ul >
+                <li class="light-blue t-align margin-auto-50"><strong>Id: </strong>{{toggle[index]._id}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Title: </strong>{{toggle[index].title}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Full Text: </strong>{{toggle[index].fullText}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Description: </strong>{{toggle[index].description}}</li>
+                <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Date: </strong>{{getPost.dateCreated.substring(0, getPost.dateCreated.indexOf('T'))}}</b-list-group-item> -->
+            <li class="light-blue t-align margin-auto-50"><strong>Posted by: </strong>{{toggle[index].postedBy}}</li>
+                <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Likes: </strong>{{getPost.likes.length}}</b-list-group-item> -->
+            </ul>
+        </div>
+
+        </div>
         </b-list-group-item>
       </b-list-group>
     </b-card>
@@ -44,30 +57,78 @@ export default {
   data() {
     return {
       getPosts: this.getPosts,
-      getPost: this.getPost,
+        getPost: this.getPost,
+        postById: null,
+        toggle: [],
+        postLength: 0,
     };
-  },
+        },
+        computed: {
 
-  created() {
+     
+        },
+
+        created() {
+
+
+
       axios
         .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
-        .then((response) => (this.getPosts = response.data));
+          .then((response) => (this.getPosts = response.data));
+
+ 
   },
   methods: {
 
-    getPostClick(index) {
-      axios
-        .get(
-          "https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/"+this.getPosts[index]._id
-        )
-        .then((response) => (this.getPost = response.data));
-    },
+      async getPostClick(index) {
 
-  }
+
+         // axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + this.getPosts[index]._id).then((response) => (this.getPost = response.data));
+
+        
+              // GET request using axios with async/await
+              const response = await axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + this.getPosts[index]._id);
+              this.getPost = response.data;
+              this.toggle = Array.from(this.getPosts);
+
+              this.toggle[index].fullText = response.data.fullText;
+
+         // var element = document.getElementById("toggl");
+         // element.classList.toggle("d-none");
+
+
+       //   this.toggle[index].fullText = window.$vm0.getPost;
+
+       //   this.postLength = this.getPosts.length
+
+
+       //   this.toggle = new Array(this.itemLength).fill('');
+          
+
+      //    this.toggle.splice(index, 1, this.getPost);
+
+      },
+
+       itemsLength() {
+         return this.getPosts.length
+      }
+
+
+
+    }
 };
 </script>
 
 <style>
+
+.d-none {
+    display: none;
+}
+
+    .d-none-o {
+        display: none;
+    }
+
 .margin-auto-20 {
   margin: 0 auto;
   width: 20%;
@@ -77,6 +138,11 @@ export default {
   margin: 0 auto;
   width: 30rem;
 }
+
+    .margin-auto-50 {
+        margin: 0 auto;
+        width: 20rem;
+    }
 
 .margin-auto {
   margin: 0 auto;
