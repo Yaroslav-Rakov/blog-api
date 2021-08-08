@@ -21,7 +21,7 @@
           <br />
           {{ item.description }}
         <div class="mb-3">
-            <b-link v-on:click="getPostClick(index)">See more...</b-link>
+            <b-link v-on:click="getPostClick(index), toggleItem(item._id)">See more...</b-link>
             <!--<div v-if="getPost && getPost._id === getPosts[index]._id || toggle.includes(getPosts[index]._id)">
                 <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Title: </strong>{{getPost.title}}</b-list-group-item>
                 <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Full Text: </strong>{{getPost.fullText}}</b-list-group-item>
@@ -33,13 +33,13 @@
             <!--</div>-->
 
         <div v-if="getPost  ">
-            <ul >
-                <li class="light-blue t-align margin-auto-50"><strong>Id: </strong>{{toggle[index]._id}}</li>
-                <li class="light-blue t-align margin-auto-50"><strong>Title: </strong>{{toggle[index].title}}</li>
-                <li class="light-blue t-align margin-auto-50"><strong>Full Text: </strong>{{toggle[index].fullText}}</li>
-                <li class="light-blue t-align margin-auto-50"><strong>Description: </strong>{{toggle[index].description}}</li>
+            <ul v-if="item.isActive" :class="{active: item.isActive}">
+                <li class="light-blue t-align margin-auto-50"><strong>Id: </strong>{{getPosts[index]._id}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Title: </strong>{{getPosts[index].title}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Full Text: </strong>{{getPosts[index].fullText}}</li>
+                <li class="light-blue t-align margin-auto-50"><strong>Description: </strong>{{getPosts[index].description}}</li>
                 <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Date: </strong>{{getPost.dateCreated.substring(0, getPost.dateCreated.indexOf('T'))}}</b-list-group-item> -->
-            <li class="light-blue t-align margin-auto-50"><strong>Posted by: </strong>{{toggle[index].postedBy}}</li>
+            <li class="light-blue t-align margin-auto-50"><strong>Posted by: </strong>{{getPosts[index].postedBy}}</li>
                 <!-- <b-list-group-item class="light-blue t-align margin-auto-70"><strong>Likes: </strong>{{getPost.likes.length}}</b-list-group-item> -->
             </ul>
         </div>
@@ -74,7 +74,10 @@ export default {
 
       axios
         .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
-          .then((response) => (this.getPosts = response.data));
+          .then((response) => (this.getPosts = response.data, response.data = response.data.map(item => {
+              item.isActive = false
+              return item
+          }) ));
 
  
   },
@@ -88,10 +91,11 @@ export default {
         
               // GET request using axios with async/await
               const response = await axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + this.getPosts[index]._id);
-              this.getPost = response.data;
-              this.toggle = Array.from(this.getPosts);
+             this.getPost = response.data;
+         //    this.getPosts[index].isActive = false
+        //      this.toggle = Array.from(this.getPosts);
 
-              this.toggle[index].fullText = response.data.fullText;
+              this.getPosts[index].fullText = response.data.fullText;
 
          // var element = document.getElementById("toggl");
          // element.classList.toggle("d-none");
@@ -107,6 +111,16 @@ export default {
 
       //    this.toggle.splice(index, 1, this.getPost);
 
+      },
+
+      toggleItem(id) {
+          console.log('it works');
+          this.getPosts = this.getPosts.map(item => {
+              if (item._id === id) {
+                  item.isActive = !item.isActive
+              }
+              return item
+          })
       },
 
        itemsLength() {
