@@ -51,7 +51,6 @@
   </div>
 </template>
 <script>
-// import axios from "axios";
 
 export default {
   data() {
@@ -71,17 +70,12 @@ export default {
         created() {
 
 
-      this.$http.get('/posts?limit=10000').then((response) => (this.getPosts = response.data, response.data = response.data.map(item => {
+
+      this.$http.get("/posts?limit=10000")
+          .then((response) => (this.getPosts = response.data, response.data = response.data.map(item => {
               item.isActive = false
               return item
           }) ));
-
-      // axios
-      //   .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
-      // .then((response) => (this.getPosts = response.data, response.data = response.data.map(item => {
-      //     item.isActive = false
-      //     return item
-      // }) ));
 
  
   },

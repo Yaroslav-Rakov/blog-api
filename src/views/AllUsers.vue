@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 
 export default {
   data() {
@@ -38,8 +37,7 @@ export default {
 
   created () {
 
-      axios
-        .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/users")
+      this.$http.get("/users")
         .then((response) => (this.getUsers = response.data));
 
   },

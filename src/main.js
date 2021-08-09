@@ -11,6 +11,14 @@ import Vuelidate from 'vuelidate'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+axios.defaults.baseURL = `https://nodejs-test-api-blog.herokuapp.com/api/v1`
+
+const authInstance = axios.create({
+  baseURL: 'https://nodejs-test-api-blog.herokuapp.com/api/v1'
+})
+
+Vue.prototype.$auth = authInstance
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin

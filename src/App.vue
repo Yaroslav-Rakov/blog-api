@@ -3,11 +3,12 @@
     <div id="nav" class="bg-dark">
       <!-- <router-link to="/">Home</router-link> | -->
         <div>
-            <router-link class="" to="/dashboard">Dashboard</router-link>
-            <router-link class="" to="/sign-up">Sign Up</router-link>
-            <router-link class="" to="/login">Login</router-link>
-            <router-link class="" to="/allUsers">Users</router-link>
-            <router-link class="" to="/posts">Posts</router-link>
+            <router-link to="/dashboard">Dashboard</router-link>
+            <router-link to="/sign-up">Sign Up</router-link>
+            <router-link to="/login">Login</router-link>
+            <router-link to="/allUsers">Users</router-link>
+            <router-link to="/posts">Posts</router-link>
+            <router-link to="/my-posts">My Posts</router-link>
         </div>
     </div>
     <router-view class="p-top" />

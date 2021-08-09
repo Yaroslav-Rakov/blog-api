@@ -65,7 +65,6 @@
 </template>
 
 <script>
-    import axios from "axios"
     
     import { required, minLength } from 'vuelidate/lib/validators'
 
@@ -130,24 +129,25 @@ methods: {
     createUser (){
 
           const user =  this.userData;
-            axios.post("https://nodejs-test-api-blog.herokuapp.com/api/v1/users", user)
+            this.$http.post("/users", user)
             .then(response => this.userDataResponse = response.data).catch(error => {
       
       console.error("There was an error!", error);
 
-      if (!this.userData.name | !this.userData.email | !this.userData.password) {
+      if (!this.userData.name || !this.userData.email || !this.userData.password) {
 
           this.errName = "All fields must be filled in!"
 
-      } else {
+      } 
+    //   else {
 
-          this.errName = '';
-          this.err = error.message;
+    //       this.errName = '';
+    //       this.err = error.message;
 
-      }
+    //   }
 
       this.errors = [];
-      if(!this.validEmail(this.email) || !this.userData.name || !this.userData.password) {
+      if(!this.validEmail(this.userData.email) && this.userData.email.length > 0) {
         this.errors.push("Valid email required.");        
       }
       if(!this.errors.length) return true;
