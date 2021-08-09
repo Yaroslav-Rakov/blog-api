@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 axios.defaults.baseURL = `https://nodejs-test-api-blog.herokuapp.com/api/v1`
+axios.defaults.headers.common["Authorization"] = localStorage.token;
 
 const authInstance = axios.create({
   baseURL: 'https://nodejs-test-api-blog.herokuapp.com/api/v1'

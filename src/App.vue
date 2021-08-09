@@ -6,6 +6,8 @@
             <router-link to="/dashboard">Dashboard</router-link>
             <router-link to="/sign-up">Sign Up</router-link>
             <router-link to="/login">Login</router-link>
+            <!-- <router-link v-if="!this.$store.state.userDataVuex._id" to="/login">Login</router-link>
+            <router-link v-if="this.$store.state.userDataVuex._id" :to="{name: 'Login', params: localStorage.token='' }">Logout</router-link> -->
             <router-link to="/allUsers">Users</router-link>
             <router-link to="/posts">Posts</router-link>
             <router-link to="/my-posts">My Posts</router-link>

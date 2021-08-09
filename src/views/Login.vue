@@ -37,7 +37,11 @@
                         </button>
                     </div>
                 </div>
-           
+                <div class="row m-top">
+                    <div class="error">{{errName}}</div>
+                    <div v-if="!this.userData._id">{{err}}</div>
+                    <!-- <div v-else>{{pushToMyPosts()}} </div> -->
+                </div>
 
 
             </div>
@@ -48,136 +52,142 @@
     </div>
 </template>
 <script>
-
-import store from '../store/store.js'
-import axios from "axios"
-    
-    import { required, minLength } from 'vuelidate/lib/validators'
+import store from "../store/store.js";
+import axios from "axios";
+// import { mapActions } from 'vuex'
 
 
-    export default {
-        data() {
+import { required, minLength } from "vuelidate/lib/validators";
+
+export default {
+  data() {
     return {
-      errors:[],
-      token: '',
+      errors: [],
+      token: "",
       userData: {
-        email: '',
-        password: ''
+        email: "",
+        password: "",
       },
- 
 
-    userDataResponse:{},
+      userDataResponse: {},
 
-      err: '',
-      errName: ''
-    
-    }
-        },
+      err: "",
+      errName: "",
+    };
+  },
 
-        validations: {
-            userData: {
-                email: {
-                    required
-                },
-                password: {
-                    required,
-                    minLength: minLength(6)
-                }
-            },
-        },  
+  validations: {
+    userData: {
+      email: {
+        required,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+    },
+  },
 
-    mounted() {
-  
+  mounted() {
+    // this.$store.dispatch('authData');
+
+
+    //   ...mapActions([
+    //   'authData', 
+
+
+    // ]),
+
 
 
     if (localStorage.token) {
       this.token = localStorage.token;
-      axios.defaults.headers.common['Authorization'] = localStorage.token;
+      axios.defaults.headers.common["Authorization"] = localStorage.token;
 
-    //   console.log(axios.defaults.headers.common['Authorization']);
+      //   console.log(axios.defaults.headers.common['Authorization']);
 
-    axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {headers: {authorization: localStorage.token}})
-          .then((response) => (this.userDataResponse = response.data, store.state.userDataVuex = response.data));  
-
-
+      axios
+        .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {
+          headers: { authorization: localStorage.token },
+        })
+        .then(
+          (response) => (
+            (this.userData = response.data),
+            (store.state.userDataVuex = response.data)
+          )
+        );
     }
   },
 
   computed: {
+    userDataVuex() {
 
-      userDataVuex() {
-          return console.log(store.state.userDataVuex)
-      }
-
+      console.log(store.state.userDataVuex);
+      return this.$store.state.userDataVuex;
+    },
+    
   },
 
-methods: {
-    login (){
+  methods: {
+    login() {
+      const user = this.userData;
+      axios
+        .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", user)
+        .then((response) => (localStorage.token = response.data.token))
+        .catch((error) => {
+          console.error("There was an error!", error);
 
-          const user =  this.userData;
-            axios.post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", user)
-            .then(response => localStorage.token = response.data.token).catch(error => {
-      
-      console.error("There was an error!", error);
+          if (
+            !this.userData.name ||
+            !this.userData.email ||
+            !this.userData.password
+          ) {
+            this.errName = "All fields must be filled in!";
+          } else {
+            this.errName = "";
+            this.err = error.message;
+          }
 
-      if (!this.userData.name || !this.userData.email || !this.userData.password) {
-
-          this.errName = "All fields must be filled in!"
-
-      } else {
-
-          this.errName = '';
-          this.err = error.message;
-
-      }
-
-      this.errors = [];
-      if(!this.validEmail(this.userData.email) && this.userData.email.length > 0) {
-        this.errors.push("Valid email required.");        
-      }
-      if(!this.errors.length) return true;
-
-    });
-
-
-
+          this.errors = [];
+          if (
+            !this.validEmail(this.userData.email) &&
+            this.userData.email.length > 0
+          ) {
+            this.errors.push("Valid email required.");
+          }
+          if (!this.errors.length) return true;
+        });
     },
 
-    validEmail: function(email) {
-      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
+    validEmail: function (email) {
+      var re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
 
-               pushToLogin() {
+    pushToMyPosts() {
+      return this.$router.push({ name: "MyPosts" });
+    },
 
-                return this.$router.push({name: "Posts"})
-
-            },
-
-  }
-
-
-
-    }
+    
+  },
+  
+};
 </script>
 <style>
-
 .margin-auto {
-        margin: 0 auto;
-        width: 30%;
+  margin: 0 auto;
+  width: 30%;
 }
 
 .light-blue {
-  background-color: #F0F8FF;
-    }
+  background-color: #f0f8ff;
+}
 .m-top {
-
-    margin-top: 20px;
-
+  margin-top: 20px;
 }
 
-    .error {
-        color: red;
-    }
-    
+.error {
+  color: red;
+}
 </style>
