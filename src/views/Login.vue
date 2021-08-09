@@ -49,6 +49,7 @@
 </template>
 <script>
 
+import store from '../store/store.js'
 import axios from "axios"
     
     import { required, minLength } from 'vuelidate/lib/validators'
@@ -86,15 +87,28 @@ import axios from "axios"
         },  
 
     mounted() {
+  
+
+
     if (localStorage.token) {
       this.token = localStorage.token;
       axios.defaults.headers.common['Authorization'] = localStorage.token;
 
-      console.log(axios.defaults.headers.common['Authorization']);
+    //   console.log(axios.defaults.headers.common['Authorization']);
 
-    axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user")
-          .then((response) => (this.userDataResponse = response.data));  
+    axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {headers: {authorization: localStorage.token}})
+          .then((response) => (this.userDataResponse = response.data, store.state.userDataVuex = response.data));  
+
+
     }
+  },
+
+  computed: {
+
+      userDataVuex() {
+          return console.log(store.state.userDataVuex)
+      }
+
   },
 
 methods: {
@@ -129,7 +143,7 @@ methods: {
 
     },
 
-    validEmail:function(email) {
+    validEmail: function(email) {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
     },
