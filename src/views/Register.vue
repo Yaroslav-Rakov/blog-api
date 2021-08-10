@@ -8,7 +8,7 @@
                     <h1>Signup</h1>
                     <div class="form-group m-top">
                         <label for="firstName">Name</label>
-                        <input type="text" id="firstName" class="form-control" placeholder="Enter name" v-model.lazy="$v.userData.name.$model" @blur="$v.userData.name.$touch()">
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter name" v-model="$v.userData.name.$model" @blur="$v.userData.name.$touch()">
                         <p class="error" v-if="$v.userData.name.$error">This field is required!</p>
                     </div>
                     <!-- <div class="form-group">
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group m-top">
                         <label for="password">Password</label>
-                        <input type="password" id="password" class="form-control" placeholder="Enter password" v-model.lazy="$v.userData.password.$model" @blur="$v.userData.password.$touch()">
+                        <input type="password" id="password" class="form-control" placeholder="Enter password" v-model="$v.userData.password.$model" @blur="$v.userData.password.$touch()">
                         <p class="error" v-if="$v.userData.password.$error">Minimum 6 characters needed!</p>
                         <p>
                             <!-- {{ userData.password }} -->

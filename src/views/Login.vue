@@ -9,8 +9,9 @@
        
                     <div class="form-group m-top">
                         <label for="email">Email</label>
-                        <input type="text" id="email" class="form-control" placeholder="Enter email" v-model.lazy="$v.userData.email.$model" @blur="$v.userData.email.$touch()">
-                        <p class="error" v-if="$v.userData.email.$error">This field is required!</p>
+                        <input type="text" id="email" class="form-control" placeholder="Enter email" v-model="$v.userData.email.$model" @blur="$v.userData.email.$touch()">
+                        <p class="error" v-if="$v.userData.email.$dirty && !$v.userData.email.required">This field is required!</p>
+                        <p class="error" v-if="$v.userData.email.$dirty && !$v.userData.email.email">Please type a valid email</p>
                           <p v-if="errors.length">
                         <b>Please correct the following error(s):</b>
                         <ul>
@@ -21,7 +22,7 @@
                     </div>
                     <div class="form-group m-top">
                         <label for="password">Password</label>
-                        <input type="password" id="password" class="form-control" placeholder="Enter password" v-model.lazy="$v.userData.password.$model" @blur="$v.userData.password.$touch()">
+                        <input type="password" id="password" class="form-control" placeholder="Enter password" v-model="$v.userData.password.$model" @blur="$v.userData.password.$touch()">
                         <p class="error" v-if="$v.userData.password.$error">Minimum 6 characters needed!</p>
                         <p>
                         </p>
@@ -56,7 +57,7 @@
 import axios from "axios";
 import {mapActions, mapGetters} from 'vuex'
 
-import { required, minLength } from "vuelidate/lib/validators";
+import { required, minLength, email } from "vuelidate/lib/validators";
 
 export default {
   data() {
@@ -79,6 +80,7 @@ export default {
     userData: {
       email: {
         required,
+        email
       },
       password: {
         required,
