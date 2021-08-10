@@ -52,10 +52,9 @@
     </div>
 </template>
 <script>
-import store from "../store/store.js";
+// import store from "../store/store.js";
 import axios from "axios";
-// import { mapActions } from 'vuex'
-
+import {mapActions, mapGetters} from 'vuex'
 
 import { required, minLength } from "vuelidate/lib/validators";
 
@@ -87,8 +86,11 @@ export default {
       },
     },
   },
-
-  mounted() {
+  created: {
+   
+  },
+  async mounted() {
+    this.GET_AUTH_DATA()
     // this.$store.dispatch('authData');
 
 
@@ -100,35 +102,43 @@ export default {
 
 
 
-    if (localStorage.token) {
-      this.token = localStorage.token;
-      axios.defaults.headers.common["Authorization"] = localStorage.token;
+    // if (localStorage.token) {
+    //   this.token = localStorage.token;
+    //   axios.defaults.headers.common["Authorization"] = localStorage.token;
 
-      //   console.log(axios.defaults.headers.common['Authorization']);
+    //   //   console.log(axios.defaults.headers.common['Authorization']);
 
-      axios
-        .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {
-          headers: { authorization: localStorage.token },
-        })
-        .then(
-          (response) => (
-            (this.userData = response.data),
-            (store.state.userDataVuex = response.data)
-          )
-        );
-    }
+    //   axios
+    //     .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {
+    //       headers: { authorization: localStorage.token },
+    //     })
+    //     .then(
+    //       (response) => (
+    //         (this.userData = response.data),
+    //         (store.state.userDataVuex = response.data)
+    //       )
+    //     );
+    // }
   },
 
-  computed: {
-    userDataVuex() {
+  computed: mapGetters(['USER_DATA_VUEX']),
+    // userDataVuex() {
 
-      console.log(store.state.userDataVuex);
-      return this.$store.state.userDataVuex;
-    },
-    
-  },
+    //   console.log(store.state.userDataVuex);
+    //   return this.$store.state.userDataVuex;
+    // },
+  //  ...mapGetters(['USER_DATA_VUEX'])
+
+  // ...mapGetters('USER_DATA_VUEX', {})
+   
+
+  
 
   methods: {
+     ...mapActions([
+        'GET_AUTH_DATA'
+      ]),
+
     login() {
       const user = this.userData;
       axios
