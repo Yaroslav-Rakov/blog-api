@@ -1,64 +1,62 @@
 <template>
   <div>
     <h2>Posts</h2>
-    <b-form-input
-      class="m-bot margin-auto-70"
-      v-model="postById"
-      placeholder="Type ID"
-    ></b-form-input>
+
     <div class="mb-3"></div>
 
-    <b-card title="">
-      <b-list-group>
-        <b-list-group-item
-          class="margin-auto-70 light-blue t-align"
-          v-for="(item, index) in storePosts"
-          :key="index"
-        >
-          <!-- <br /><strong>{{"Post #"+parseInt(index+1)}}</strong> -->
-          <h5 style="text-align: center">{{ item.title }}</h5>
-          <br />
-          {{ item.description }}
-          <div class="mb-3">
+    <b-list-group>
+      <b-list-group-item
+        class="margin-auto-70 t-align"
+        v-for="(item, index) in storePosts"
+        :key="index"
+      >
+        <!-- <br /><strong>{{"Post #"+parseInt(index+1)}}</strong> -->
+        <h5 style="text-align: center">{{ item.title }}</h5>
+        <br />
+        {{ item.description }}
+        <div class="mb-3">
+          <div v-if="storePost">
+            <div v-if="item.isActive" :class="{ active: item.isActive }">
+              <!-- <p class=" t-align margin-auto-70">
+                  <strong>Id: </strong>{{ storePosts[index]._id }}
+                </p>
+                <p class=" t-align margin-auto-70">
+                  <strong>Title: </strong>{{ storePosts[index].title }}
+                </p> -->
+              <p class="t-align margin-auto-70">
+                <br />{{ storePosts[index].fullText }}
+              </p>
+              <br />
+              <!-- <p class=" t-align margin-auto-70">
+                  <strong>Description: </strong
+                  >{{ storePosts[index].description }}
+                </p> -->
+              <div class="f-right">
+                <span class="t-align margin-auto-70">
+                  <strong>Posting date: </strong
+                  >{{
+                    storePosts[index].dateCreated.substring(
+                      0,
+                      storePosts[index].dateCreated.indexOf("T")
+                    ) + ', '
+                  }}
+                </span>
+                <span class="t-align margin-auto-70">
+                  <strong>Published by: </strong>{{ storePosts[index].postedBy + ', ' }}
+                </span>
+                <span class="t-align margin-auto-70">
+                  <strong>Likes: </strong>{{ storePosts[index].likes.length }}
+                </span>
+                <br />
+              </div>
+            </div>
             <b-link @click="ACTION_POST_DATA(index), toggleItem(item._id)"
               >See more...</b-link
             >
-            <div v-if="storePost">
-              <ul v-if="item.isActive" :class="{ active: item.isActive }">
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Id: </strong>{{ storePosts[index]._id }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Title: </strong>{{ storePosts[index].title }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Full Text: </strong>{{ storePost.fullText }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Description: </strong
-                  >{{ storePosts[index].description }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Date: </strong
-                  >{{
-                    storePost.dateCreated.substring(
-                      0,
-                      storePost.dateCreated.indexOf("T")
-                    )
-                  }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Posted by: </strong>{{ storePosts[index].postedBy }}
-                </li>
-                <li class="light-blue t-align margin-auto-50">
-                  <strong>Likes: </strong>{{ storePost.likes.length }}
-                </li>
-              </ul>
-            </div>
           </div>
-        </b-list-group-item>
-      </b-list-group>
-    </b-card>
+        </div>
+      </b-list-group-item>
+    </b-list-group>
   </div>
 </template>
 <script>
@@ -68,8 +66,6 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      getPost: this.getPost,
-      postById: null,
       toggle: [],
       postLength: 0,
     };
@@ -92,15 +88,6 @@ export default {
   methods: {
     ...mapActions(["ACTION_POSTS_DATA", "ACTION_POST_DATA"]),
 
-    async getPostClick(index) {
-      const response = await this.$http.get(
-        "/posts/" + this.getPosts[index]._id
-      );
-      this.getPost = response.data;
-
-      this.getPosts[index].fullText = response.data.fullText;
-    },
-
     toggleItem(id) {
       console.log("toggleItem");
       this.storePosts = this.storePosts.map((item) => {
@@ -110,15 +97,11 @@ export default {
         return item;
       });
     },
-
-    itemsLength() {
-      return this.getPosts.length;
-    },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 .d-none {
   display: none;
 }
@@ -134,7 +117,7 @@ export default {
 
 .margin-auto-70 {
   margin: 0 auto;
-  width: 30rem;
+  width: 60rem;
 }
 
 .margin-auto-50 {
@@ -173,5 +156,13 @@ ul {
 
 .t-align {
   text-align: left;
+}
+
+body {
+  background: #eee;
+}
+
+.f-right{
+  float: right;
 }
 </style>

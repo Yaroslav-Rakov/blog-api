@@ -6,67 +6,12 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-// export default new Vuex.Store({
-
-//     state: {
-//         userDataVuex: {},
-//         test: 'test123'
-
-//     },
-//     mutations: {
-//         SET_POSTS(state, response) {
-//             state.userDataVuex = response
-//         }
-
-//         // authData(state) {
-//         //     if (localStorage.token) {
-//         //         this.token = localStorage.token;
-//         //         axios.defaults.headers.common["Authorization"] = localStorage.token;
-
-//         //         this.$http.get('auth/user', {
-//         //             headers: { authorization: localStorage.token },
-//         //         }).then(response => state.userDataVuex = response.data)
-//         //     }
-//         // }
-
-//     },
-//     actions: {
-//         authData({ commit }) {
-//             console.log('authData works');
-//             if (localStorage.token) {
-//                 this.token = localStorage.token;
-//                 axios.defaults.headers.common["Authorization"] = localStorage.token;
-
-//                 this.$http.get('/auth/user', {
-//                     headers: { authorization: localStorage.token },
-//                 }).then(response => { commit('SET_POSTS', response.data) })
-//             }
-//         }
-
-//         // authData(context) {
-//         //     context.commit('authData')
-//         // }
-//     },
-//     modules: {},
-
-//     getters: {
-
-//         USER_DATA_VUEX(state) {
-//             return state.userDataVuex;
-//         }
-
-//     }
-// });
-
-
-
 export default new Vuex.Store({
 
     state: {
         userDataVuex: {},
         getPosts: {},
         getPost: {},
-        test: 'test123'
 
     },
     mutations: {
@@ -82,7 +27,7 @@ export default new Vuex.Store({
         },
         SET_POST_DATA(state, response) {
             state.getPost = response
-            // state.getPosts.fullText = response.fullText
+
         }
 
     },
@@ -101,12 +46,12 @@ export default new Vuex.Store({
         ACTION_POSTS_DATA({ commit }) {
             console.log('ACTION_POSTS_DATA works');
             axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
-            .then((response) => { commit('SET_POSTS_DATA', response.data) });
+                .then((response) => { commit('SET_POSTS_DATA', response.data) });
         },
         ACTION_POST_DATA({ commit, state }, index) {
             console.log('ACTION_POST_DATA works');
             axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + state.getPosts[index]._id)
-            .then((response) => { commit('SET_POST_DATA', response.data) });
+                .then((response) => { commit('SET_POST_DATA', response.data), state.getPosts[index].fullText = response.data.fullText, state.getPosts[index].dateCreated = response.data.dateCreated, state.getPosts[index].likes = response.data.likes });
         }
 
 

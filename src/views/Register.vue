@@ -189,7 +189,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .margin-auto {
   margin: 0 auto;
   width: 30%;
