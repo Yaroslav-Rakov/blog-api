@@ -69,59 +69,37 @@ export default new Vuex.Store({
 
     },
     mutations: {
-        SET_USER_DATA_VUEX(state, response) {
+        SET_AUTH_DATA(state, response) {
             state.userDataVuex = response
         },
 
-        SET_POSTS(state, response) {
+        SET_POSTS_DATA(state, response) {
             state.getPosts = response
+            state.getPosts = response.map(item => {
+                item.isActive = false
+                return item
+            })
         }
 
-        // authData(state) {
-        //     if (localStorage.token) {
-        //         this.token = localStorage.token;
-        //         axios.defaults.headers.common["Authorization"] = localStorage.token;
-
-        //         this.$http.get('auth/user', {
-        //             headers: { authorization: localStorage.token },
-        //         }).then(response => state.userDataVuex = response.data)
-        //     }
-        // }
 
     },
     actions: {
-        GET_AUTH_DATA({ commit }) {
-            console.log('GET_AUTH_DATA works');
-            // if (localStorage.token) {
-            // this.token = localStorage.token;
-            axios.defaults.headers.common["Authorization"] = localStorage.token;
+        ACTION_AUTH_DATA({ commit }) {
+            console.log('ACTION_AUTH_DATA works');
+            if (localStorage.token) {
+                // this.token = localStorage.token;
+                axios.defaults.headers.common["Authorization"] = localStorage.token;
+                console.log('Token: ' + axios.defaults.headers.common["Authorization"]);
 
-            axios.get('https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user', {
-                headers: { authorization: localStorage.token },
-            }).then(response => { commit('SET_USER_DATA_VUEX', response.data) })
-
-            // return axios('https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user', {
-            //     method: "GET"
-            // })
-            //     .then((response) => {
-            //         commit('SET_USER_DATA_VUEX', response.data);
-            //         return response;
-            //     })
-            //     .catch((error) => {
-            //         console.log(error)
-            //         return error;
-            //     })
-
-            // }
-
-
-
-
+                axios.get('https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user', {
+                    headers: { authorization: localStorage.token },
+                }).then(response => { commit('SET_AUTH_DATA', response.data) })
+            }
         },
 
 
-        GET_POSTS({ commit }) {
-            console.log('GET_POSTS works');
+        ACTION_POSTS_DATA({ commit }) {
+            console.log('ACTION_POSTS_DATA works');
             // if (localStorage.token) {
             // this.token = localStorage.token;
             // axios.defaults.headers.common["Authorization"] = localStorage.token;
@@ -130,8 +108,9 @@ export default new Vuex.Store({
             //     headers: { authorization: localStorage.token },
             // }).then(response => { commit('SET_POSTS', response.data) })
 
-            
-            this.$http.get('/posts?limit=10000').then((response) => { commit('SET_POSTS', response.data) } );
+
+            axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
+            .then((response) => { commit('SET_POSTS_DATA', response.data) });
 
             // }
 
@@ -140,16 +119,19 @@ export default new Vuex.Store({
 
         }
 
-        // authData(context) {
-        //     context.commit('authData')
-        // }
+
     },
     modules: {},
 
     getters: {
-        USER_DATA_VUEX(state) {
+        GETTER_AUTH_DATA(state) {
+            console.log(state.userDataVuex);
             return state.userDataVuex;
+        },
 
+        GETTER_POSTS_DATA(state) {
+            console.log(state.getPosts);
+            return state.getPosts;
         }
     },
 

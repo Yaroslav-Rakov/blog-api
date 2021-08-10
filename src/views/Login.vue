@@ -88,57 +88,16 @@ export default {
       },
     },
   },
-  created: {
-   
-  },
-  async mounted() {
-    this.GET_AUTH_DATA()
-    // this.$store.dispatch('authData');
-
-
-    //   ...mapActions([
-    //   'authData', 
-
-
-    // ]),
-
-
-
-    // if (localStorage.token) {
-    //   this.token = localStorage.token;
-    //   axios.defaults.headers.common["Authorization"] = localStorage.token;
-
-    //   //   console.log(axios.defaults.headers.common['Authorization']);
-
-    //   axios
-    //     .get("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user", {
-    //       headers: { authorization: localStorage.token },
-    //     })
-    //     .then(
-    //       (response) => (
-    //         (this.userData = response.data),
-    //         (store.state.userDataVuex = response.data)
-    //       )
-    //     );
-    // }
+  created() {
+    this.ACTION_AUTH_DATA()
   },
 
-  computed: mapGetters(['USER_DATA_VUEX']),
-    // userDataVuex() {
+  computed: mapGetters(['GETTER_AUTH_DATA']),
 
-    //   console.log(store.state.userDataVuex);
-    //   return this.$store.state.userDataVuex;
-    // },
-  //  ...mapGetters(['USER_DATA_VUEX'])
-
-  // ...mapGetters('USER_DATA_VUEX', {})
-   
-
-  
 
   methods: {
      ...mapActions([
-        'GET_AUTH_DATA'
+        'ACTION_AUTH_DATA'
       ]),
 
     login() {
