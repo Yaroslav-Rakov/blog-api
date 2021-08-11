@@ -9,13 +9,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state: {
-        token: localStorage.token,
+        token: '',
+       // token: window.localStorage.token,
         // isAuth: false,
         userDataVuex: {},
         getPosts: {},
         getPost: {},
         getUser: {},
-        createPost: {}
+        createPost: {},
+        userLogin: {}
           
 
     },
@@ -39,6 +41,12 @@ export default new Vuex.Store({
         SET_CREATE_POST(state, response) {
             state.createPost = response
         },
+        SET_LOGIN(state, response) {
+            state.userLogin = response
+        },
+        SET_TOKEN(state, response) {
+            state.token = response
+        },
         // SET_TITLE(state) {
         //     state.createPost.title
         // },
@@ -51,6 +59,23 @@ export default new Vuex.Store({
 
     },
     actions: {
+        ACTION_LOGIN({ commit, state }) {
+            console.log('ACTION_LOGIN works');
+            axios
+                .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
+                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token })
+                .catch((error) => {
+                    console.error("There was an error!", error);
+
+
+
+
+                });
+
+
+
+        },
+
         ACTION_AUTH_DATA({ commit }) {
             console.log('ACTION_AUTH_DATA works');
             if (localStorage.token) {
@@ -121,6 +146,10 @@ export default new Vuex.Store({
         GET_CREATED_POST(state) {
             console.log(state.createPost);
             return state.createPost;
+        },
+        GET_LOGIN(state) {
+            console.log(state.userLogin);
+            return state.userLogin;
         }
     },
 
