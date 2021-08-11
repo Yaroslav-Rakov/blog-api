@@ -78,6 +78,7 @@ export default {
       },
     },
   },
+
   created() {
     this.ACTION_AUTH_DATA()
   },
@@ -89,14 +90,19 @@ export default {
      ...mapActions([
          'ACTION_AUTH_DATA',
          'ACTION_LOGIN'
-      ]),
+     ]),
+      goTo() {
+
+          this.$router.push({ name: 'Posts' });
+
+
+      },
 
       login() {
           this.$store.commit("SET_LOGIN", this.userData)
           this.$store.dispatch("ACTION_LOGIN")
-          if (this.$store.state.token) {
-             this.$router.push('posts');
-          }
+          this.goTo()
+
 
 
     //  const user = this.userData;

@@ -11,17 +11,24 @@ export default new Vuex.Store({
     state: {
         token: window.localStorage.token,
        // token: window.localStorage.token,
-        // isAuth: false,
+       // isAuth: null,
         userDataVuex: {},
         getPosts: {},
         getPost: {},
         getUser: {},
         createPost: {},
-        userLogin: {}
+        userLogin: {},
+        authToken: '',
+        test: ''
           
 
     },
     mutations: {
+        initialiseStore(state) {
+            if (localStorage.getItem('token')) {
+                state.token = localStorage.token;
+}
+    },
         SET_AUTH_DATA(state, response) {
             state.userDataVuex = response
         },
@@ -63,7 +70,7 @@ export default new Vuex.Store({
             console.log('ACTION_LOGIN works');
             axios
                 .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
-                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token })
+                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token, state.authToken = response.data.token })
                 .catch((error) => {
                     console.error("There was an error!", error);
 
@@ -72,7 +79,7 @@ export default new Vuex.Store({
 
         },
 
-        ACTION_AUTH_DATA({ commit }) {
+        ACTION_AUTH_DATA({ commit, state }) {
             console.log('ACTION_AUTH_DATA works');
             if (localStorage.token) {
                 axios.defaults.headers.common["Authorization"] = localStorage.token;
@@ -80,7 +87,7 @@ export default new Vuex.Store({
 
                 axios.get('https://nodejs-test-api-blog.herokuapp.com/api/v1/auth/user', {
                     headers: { authorization: localStorage.token },
-                }).then(response => { commit('SET_AUTH_DATA', response.data) })
+                }).then(response => { commit('SET_AUTH_DATA', response.data), state.authToken = localStorage.token })
             }
         },
         ACTION_POSTS_DATA({ commit }) {

@@ -33,6 +33,10 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
-  store,
+    store,
+    beforeCreate() { this.$store.state.test = window.localStorage.token; },
+   // beforeUpdate() { this.$store.commit('initialiseStore'); },
+  //  beforeCreate() { this.$store.dispatch("ACTION_LOGIN") },
+
   render: (h) => h(App),
 }).$mount("#app");
