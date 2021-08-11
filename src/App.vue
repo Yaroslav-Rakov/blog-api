@@ -5,17 +5,58 @@
         <div>
             <router-link to="/dashboard">Dashboard</router-link>
             <router-link to="/sign-up">Sign Up</router-link>
-            <router-link to="/login">Login</router-link>
+            <router-link v-if="!this.$store.state.token" @click.native="saveToken" to="/login">Login</router-link>
+
+            <router-link v-if="this.$store.state.token" @click.native="resetToken" to="/login">Log Out</router-link>
+            
             <!-- <router-link v-if="!this.$store.state.userDataVuex._id" to="/login">Login</router-link>
             <router-link v-if="this.$store.state.userDataVuex._id" :to="{name: 'Login', params: localStorage.token='' }">Logout</router-link> -->
             <router-link to="/allUsers">Users</router-link>
             <router-link to="/posts">Posts</router-link>
             <router-link to="/my-posts">My Posts</router-link>
+            <router-link to="/create-post">Create Post</router-link>
         </div>
     </div>
     <router-view class="p-top" />
   </div>
 </template>
+
+<script>
+export default {
+data () {
+  return {
+    // token: localStorage.token,
+    // isAuth: false
+  }
+},
+computed: {
+
+  // logOut: function() {
+
+  //   return this.token ? this.resetToken() : this.saveToken()
+  // }
+
+},
+created() {
+  // this.token = localStorage.token
+
+},
+methods: {
+  resetToken () {
+    // this.$store.state.isAuth = false,
+    this.$store.state.token = '',
+    localStorage.token = ''
+  },
+  saveToken () {
+    // this.$store.state.isAuth = true,
+    this.$store.state.token = localStorage.token
+  }
+}
+
+
+}
+
+</script>
 
 <style lang="scss" scoped>
 #app {

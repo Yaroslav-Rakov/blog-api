@@ -15,9 +15,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
         import(/* webpackChunkName: "Dashboard" */ "../views/Dashboard.vue"),
   },
@@ -25,9 +23,7 @@ const routes = [
   {
     path: "/sign-up",
     name: "Sign-up",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
         import(/* webpackChunkName: "Register" */ "../views/Register.vue"),
   },
@@ -35,9 +31,7 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
         import(/* webpackChunkName: "Login" */ "../views/Login.vue"),
   },
@@ -45,9 +39,7 @@ const routes = [
   {
     path: "/allUsers",
     name: "Users",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
         import(/* webpackChunkName: "AllUsers" */ "../views/AllUsers.vue"),
 
@@ -57,9 +49,7 @@ const routes = [
   {
     path: "/posts",
     name: "Posts",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+
     component: () =>
         import(/* webpackChunkName: "AllPosts" */ "../views/AllPosts.vue"),
 
@@ -69,11 +59,19 @@ const routes = [
   {
     path: "/my-posts",
     name: "MyPosts",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+ 
     component: () =>
         import(/* webpackChunkName: "MyPosts" */ "../views/MyPosts.vue"),
+
+
+  },
+
+  {
+    path: "/create-post",
+    name: "CreatePost",
+
+    component: () =>
+        import(/* webpackChunkName: "CreatePost" */ "../views/CreatePost.vue"),
 
 
   }

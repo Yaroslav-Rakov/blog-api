@@ -54,7 +54,7 @@ export default {
 
 .margin-auto-70 {
   margin: 0 auto;
-  width: 30rem;
+  width: 60rem;
 }
 
 .margin-auto {

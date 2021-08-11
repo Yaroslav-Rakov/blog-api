@@ -10,19 +10,13 @@
         v-for="(item, index) in storePosts"
         :key="index"
       >
-        <!-- <br /><strong>{{"Post #"+parseInt(index+1)}}</strong> -->
-        <h5 style="text-align: center">{{ item.title }}</h5>
+        <h5 style="text-align: center">{{ storePosts[index].title }}</h5>
         <br />
         {{ item.description }}
         <div class="mb-3">
           <div v-if="storePost">
             <div v-if="item.isActive" :class="{ active: item.isActive }">
-              <!-- <p class=" t-align margin-auto-70">
-                  <strong>Id: </strong>{{ storePosts[index]._id }}
-                </p>
-                <p class=" t-align margin-auto-70">
-                  <strong>Title: </strong>{{ storePosts[index].title }}
-                </p> -->
+
               <p class="t-align margin-auto-70">
                 <br />{{ storePosts[index].fullText }}
               </p>
@@ -38,20 +32,30 @@
                     storePosts[index].dateCreated.substring(
                       0,
                       storePosts[index].dateCreated.indexOf("T")
-                    ) + ', '
+                    ) + ", "
                   }}
                 </span>
-                <span class="t-align margin-auto-70">
-                  <strong>Published by: </strong>{{ storePosts[index].postedBy + ', ' }}
+                <span
+                  class="t-align margin-auto-70"
+                >
+                  <strong>Published by: </strong
+                  >{{ storePosts[index].name + ", " }}
                 </span>
+              
                 <span class="t-align margin-auto-70">
                   <strong>Likes: </strong>{{ storePosts[index].likes.length }}
                 </span>
                 <br />
               </div>
             </div>
-            <b-link @click="ACTION_POST_DATA(index), toggleItem(item._id)"
-              >See more...</b-link
+            <b-link
+              @click="
+                ACTION_POST_DATA(index),
+                 ACTION_USER_DATA(index),
+                  toggleItem(item._id)
+              "
+              ><span v-if="!storePosts[index].isActive">See more...</span
+              ><span v-else>See less...</span></b-link
             >
           </div>
         </div>
@@ -67,26 +71,29 @@ export default {
   data() {
     return {
       toggle: [],
-      postLength: 0,
     };
   },
   computed: {
-    ...mapGetters(["GETTER_POSTS_DATA", "GETTER_POST_DATA"]),
+    ...mapGetters(["GET_POSTS_DATA", "GET_POST_DATA", "GET_USER_DATA"]),
 
     storePosts() {
-      return this.GETTER_POSTS_DATA;
+      return this.GET_POSTS_DATA;
     },
     storePost() {
-      return this.GETTER_POST_DATA;
+      return this.GET_POST_DATA;
     },
   },
 
-  created() {
-    this.ACTION_POSTS_DATA();
-    // this.ACTION_POST_DATA(index);
+  async created() {
+    await this.ACTION_POSTS_DATA();
+    await this.ACTION_USER_DATA();
   },
   methods: {
-    ...mapActions(["ACTION_POSTS_DATA", "ACTION_POST_DATA"]),
+    ...mapActions([
+      "ACTION_POSTS_DATA",
+      "ACTION_POST_DATA",
+      "ACTION_USER_DATA",
+    ]),
 
     toggleItem(id) {
       console.log("toggleItem");
@@ -162,7 +169,7 @@ body {
   background: #eee;
 }
 
-.f-right{
+.f-right {
   float: right;
 }
 </style>

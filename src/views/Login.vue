@@ -92,7 +92,7 @@ export default {
     this.ACTION_AUTH_DATA()
   },
 
-  computed: mapGetters(['GETTER_AUTH_DATA']),
+  computed: mapGetters(['GET_AUTH_DATA']),
 
 
   methods: {
@@ -128,6 +128,9 @@ export default {
           }
           if (!this.errors.length) return true;
         });
+            this.$router.push({name: 'posts'})
+
+
     },
 
     validEmail: function (email) {
