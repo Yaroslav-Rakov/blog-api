@@ -4,15 +4,14 @@
       <!-- <router-link to="/">Home</router-link> | -->
         <div>
             <router-link to="/dashboard">Dashboard</router-link>
-
-            <router-link @click.native="resetToken" to="/login">Log Out</router-link>
-            
             <!-- <router-link v-if="!this.$store.state.userDataVuex._id" to="/login">Login</router-link>
-            <router-link v-if="this.$store.state.userDataVuex._id" :to="{name: 'Login', params: localStorage.token='' }">Logout</router-link> -->
+    <router-link v-if="this.$store.state.userDataVuex._id" :to="{name: 'Login', params: localStorage.token='' }">Logout</router-link> -->
             <router-link to="/allUsers">Users</router-link>
             <router-link to="/posts">Posts</router-link>
             <router-link to="/my-posts">My Posts</router-link>
             <router-link to="/create-post">Create Post</router-link>
+            <router-link class="fl-right" @click.native="resetToken" to="/login">Log Out</router-link>
+
         </div>
     </div>
     <div v-else-if="!this.$store.state.token" id="nav" class="bg-dark">
@@ -28,7 +27,7 @@
 export default {
 data () {
   return {
-     token: localStorage.token,
+    // token: localStorage.token,
     // isAuth: false
   }
 },
@@ -57,10 +56,8 @@ methods: {
       this.$store.state.token = localStorage.token
       return this.$store.state.token
     },
-    async toPosts() {
-        if (localStorage.token) {
-           await this.$router.push({ name: 'Posts'})
-        }
+    toPosts() {
+           this.$router.push({ name: 'Posts'})
     }
 }
 

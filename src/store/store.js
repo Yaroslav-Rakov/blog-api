@@ -9,7 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state: {
-        token: '',
+        token: window.localStorage.token,
        // token: window.localStorage.token,
         // isAuth: false,
         userDataVuex: {},
@@ -67,11 +67,7 @@ export default new Vuex.Store({
                 .catch((error) => {
                     console.error("There was an error!", error);
 
-
-
-
                 });
-
 
 
         },
