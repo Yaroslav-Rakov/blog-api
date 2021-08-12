@@ -6,6 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Vuelidate from 'vuelidate'
+//  import login from './views/Login.vue'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -34,7 +35,16 @@ Vue.config.productionTip = false;
 new Vue({
   router,
     store,
-    beforeCreate() { this.$store.state.test = window.localStorage.token; },
+  //  beforeCreate() { this.$store.state.test = window.localStorage.token; },
+    beforeCreate() { 
+    //   let user = {email: "yaroslav@gmail.com", password: "123456"}
+    //  this.$store.commit("SET_LOGIN", user)
+      
+    //   this.$store.dispatch("ACTION_LOGIN") 
+    
+    },
+
+  //  created() { this.$store.state.test = window.localStorage.token; },
    // beforeUpdate() { this.$store.commit('initialiseStore'); },
   //  beforeCreate() { this.$store.dispatch("ACTION_LOGIN") },
 

@@ -53,6 +53,8 @@ export default new Vuex.Store({
         },
         SET_TOKEN(state, response) {
             state.token = response
+            state.test = response
+            console.log('SET_TOKEN state', state);
         },
         // SET_TITLE(state) {
         //     state.createPost.title
@@ -67,16 +69,18 @@ export default new Vuex.Store({
     },
     actions: {
         ACTION_LOGIN({ commit, state }) {
-            console.log('ACTION_LOGIN works');
-            axios
-                .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
-                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token, state.authToken = response.data.token, state.token = response.data.token })
-                .catch((error) => {
-                    console.error("There was an error!", error);
-
-                });
-
-
+            return new Promise ((resolve, reject) => {
+                axios
+                    .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
+                    .then((response) => { 
+                        commit('SET_TOKEN', response.data.token);
+                        resolve({ name: 'Posts' })
+                    })
+                    .catch((error) => {
+                        console.error("There was an error!", error);
+                        reject(error);
+                    });
+            });
         },
 
         ACTION_AUTH_DATA({ commit, state }) {

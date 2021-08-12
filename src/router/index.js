@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import createWebHistory from "vue-router";
 import Home from "../views/Home.vue";
  import store from '../store/store.js'
+// import login from '../views/Login.vue'
 
 Vue.use(VueRouter);
 Vue.use(createWebHistory);    
@@ -86,19 +87,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        //  let test = window.localStorage.token;
-        if (!store.state.token) {
-            next({ name: "Login" });
-        } else {
-            next();
-        }
-    }
-    else {
-        next();
-    }
-
-
+    console.log('from router store.state.test', store.state.test);
+    const redirect = to.matched.some(record => record.meta.requiresAuth) && !store.state.test?
+        { name: "Login" }: undefined;
+        
+    console.log('redirect', redirect);
+    next(redirect);
 })
 
 /* router.onReady(router.push({ name: "Posts" })) */
