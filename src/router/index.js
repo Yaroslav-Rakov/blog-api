@@ -88,9 +88,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     console.log('from router store.state.test', store.state.test);
-    const redirect = to.matched.some(record => record.meta.requiresAuth) && !store.state.test?
+    const redirect = to.matched.some(record => record.meta.requiresAuth) && !store.state.token?
         { name: "Login" }: undefined;
-        
+
     console.log('redirect', redirect);
     next(redirect);
 })

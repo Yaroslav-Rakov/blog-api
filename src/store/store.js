@@ -9,7 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state: {
-        token: window.localStorage.token,
+        token: '',
        // token: window.localStorage.token,
        // isAuth: null,
         userDataVuex: {},
@@ -53,7 +53,6 @@ export default new Vuex.Store({
         },
         SET_TOKEN(state, response) {
             state.token = response
-            state.test = response
             console.log('SET_TOKEN state', state);
         },
         // SET_TITLE(state) {
