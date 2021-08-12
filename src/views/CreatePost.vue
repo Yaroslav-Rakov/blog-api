@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-12 margin-auto-70">
+      <b-card class="col-md-12 margin-auto-70">
         <h1>Create post</h1>
 
         <form>
@@ -51,7 +51,7 @@
     		        </button> -->
           </div>
         </form>
-      </div>
+      </b-card>
     </div>
   </div>
 </template>
@@ -119,6 +119,8 @@ export default {
 
 createP() {
 	this.$store.commit("SET_CREATE_POST",this.createPost)
+
+  this.ACTION_CREATE_POST()
 
 }
   },

@@ -3,7 +3,7 @@
     <div v-if="this.$store.state.token" id="nav" class="bg-dark">
       <!-- <router-link to="/">Home</router-link> | -->
         <div>
-            <router-link to="/dashboard">Dashboard</router-link>
+            <!-- <router-link to="/dashboard">Dashboard</router-link> -->
             <!-- <router-link v-if="!this.$store.state.userDataVuex._id" to="/login">Login</router-link>
     <router-link v-if="this.$store.state.userDataVuex._id" :to="{name: 'Login', params: localStorage.token='' }">Logout</router-link> -->
             <router-link to="/allUsers">Users</router-link>
@@ -11,6 +11,7 @@
             <router-link to="/my-posts">My Posts</router-link>
             <router-link to="/create-post">Create Post</router-link>
             <router-link class="fl-right" @click.native="resetToken" to="/login">Log Out</router-link>
+             <router-link class="fl-right" to="/account">Account</router-link>
 
         </div>
     </div>

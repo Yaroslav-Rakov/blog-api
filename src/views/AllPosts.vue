@@ -7,18 +7,18 @@
     <b-list-group>
       <b-list-group-item
         class="margin-auto-70 t-align"
-        v-for="(item, index) in storePosts"
+        v-for="(item, index) in GET_POSTS_DATA"
         :key="index"
       >
-        <h5 style="text-align: center">{{ storePosts[index].title }}</h5>
+        <h5 style="text-align: center">{{ GET_POSTS_DATA[index].title }}</h5>
         <br />
         {{ item.description }}
         <div class="mb-3">
-          <div v-if="storePost">
+          <div v-if="GET_POST_DATA">
             <div v-if="item.isActive" :class="{ active: item.isActive }">
 
               <p class="t-align margin-auto-70">
-                <br />{{ storePosts[index].fullText }}
+                <br />{{ GET_POSTS_DATA[index].fullText }}
               </p>
               <br />
               <!-- <p class=" t-align margin-auto-70">
@@ -29,9 +29,9 @@
                 <span class="t-align margin-auto-70">
                   <strong>Posting date: </strong
                   >{{
-                    storePosts[index].dateCreated.substring(
+                    GET_POSTS_DATA[index].dateCreated.substring(
                       0,
-                      storePosts[index].dateCreated.indexOf("T")
+                      GET_POSTS_DATA[index].dateCreated.indexOf("T")
                     ) + ", "
                   }}
                 </span>
@@ -39,22 +39,23 @@
                   class="t-align margin-auto-70"
                 >
                   <strong>Published by: </strong
-                  >{{ storePosts[index].name + ", " }}
+                  >{{ GET_POSTS_DATA[index].name + ", " }}
                 </span>
               
                 <span class="t-align margin-auto-70">
-                  <strong>Likes: </strong>{{ storePosts[index].likes.length }}
+                  <strong>Likes: </strong>{{ GET_POSTS_DATA[index].likes.length }}
                 </span>
                 <br />
               </div>
             </div>
             <b-link
               @click="
-                ACTION_POST_DATA(index),
-                 ACTION_USER_DATA(index),
-                  toggleItem(item._id)
+             // toggle(item._id, index)
+             //   ACTION_POST_DATA(index),
+             //    ACTION_USER_DATA(index),
+                 toggleItem(item._id, index)
               "
-              ><span v-if="!storePosts[index].isActive">See more...</span
+              ><span v-if="!GET_POSTS_DATA[index].isActive">See more...</span
               ><span v-else>See less...</span></b-link
             >
           </div>
@@ -70,23 +71,21 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      toggle: [],
     };
   },
   computed: {
     ...mapGetters(["GET_POSTS_DATA", "GET_POST_DATA", "GET_USER_DATA"]),
 
-    storePosts() {
-      return this.GET_POSTS_DATA;
-    },
-    storePost() {
-      return this.GET_POST_DATA;
-    },
+    // storePosts() {
+    //   return this.GET_POSTS_DATA;
+    // },
+    
   },
 
-  async created() {
-    await this.ACTION_POSTS_DATA();
-    await this.ACTION_USER_DATA();
+   created() {
+     this.ACTION_POSTS_DATA();
+    //  this.ACTION_POST_DATA();
+    // await this.ACTION_USER_DATA();
   },
   methods: {
     ...mapActions([
@@ -95,15 +94,44 @@ export default {
       "ACTION_USER_DATA",
     ]),
 
-    toggleItem(id) {
-      console.log("toggleItem");
-      this.storePosts = this.storePosts.map((item) => {
+    toggle(id){
+
+      console.log("toggle inside");
+      this.GET_POSTS_DATA = this.GET_POSTS_DATA.map((item) => {
         if (item._id === id) {
           item.isActive = !item.isActive;
         }
         return item;
       });
+
     },
+
+//     async function toggle(id) {
+//       let user = await getUser(100);
+//       let services = await getServices(user);
+//       let cost = await getServiceCost(services);
+//       console.log(`The service cost is ${cost}`);
+// }
+
+
+     toggleItem(id, index) {
+      console.log('toggleItem inside');
+       this.ACTION_POST_DATA(index);
+      console.log('ACTION_POST_DATA done');
+
+      //  this.ACTION_USER_DATA(index);
+      // console.log('ACTION_USER_DATA done');
+
+       this.toggle(id);
+    },
+
+
+
+    //     toggleItem(id, index) {
+    //   this.ACTION_POST_DATA(index);
+    //   this.ACTION_USER_DATA(index);
+    //   this.toggle(id);
+    // },
   },
 };
 </script>

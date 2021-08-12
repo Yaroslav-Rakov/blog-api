@@ -78,6 +78,16 @@ const routes = [
 
     },
 
+    {
+        path: "/account",
+        name: "Account",
+    
+        component: () =>
+            import(/* webpackChunkName: "Account" */ "../views/Account.vue"),
+    
+    
+        },
+
  
 ];
 

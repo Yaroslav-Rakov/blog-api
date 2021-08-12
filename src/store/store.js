@@ -9,9 +9,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
     state: {
-        token: '',
-       // token: window.localStorage.token,
-       // isAuth: null,
+        token: window.localStorage.token,
+        // token: window.localStorage.token,
+        // isAuth: null,
         userDataVuex: {},
         getPosts: {},
         getPost: {},
@@ -20,15 +20,15 @@ export default new Vuex.Store({
         userLogin: {},
         authToken: '',
         test: ''
-          
+
 
     },
     mutations: {
-        initialiseStore(state) {
-            if (localStorage.getItem('token')) {
-                state.token = localStorage.token;
-}
-    },
+        // initialiseStore(state) {
+        //     if (localStorage.getItem('token')) {
+        //         state.token = localStorage.token;
+        //     }
+        // },
         SET_AUTH_DATA(state, response) {
             state.userDataVuex = response
         },
@@ -53,6 +53,7 @@ export default new Vuex.Store({
         },
         SET_TOKEN(state, response) {
             state.token = response
+            localStorage.token = response
             console.log('SET_TOKEN state', state);
         },
         // SET_TITLE(state) {
@@ -68,10 +69,10 @@ export default new Vuex.Store({
     },
     actions: {
         ACTION_LOGIN({ commit, state }) {
-            return new Promise ((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 axios
                     .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
-                    .then((response) => { 
+                    .then((response) => {
                         commit('SET_TOKEN', response.data.token);
                         resolve({ name: 'Posts' })
                     })
@@ -96,40 +97,43 @@ export default new Vuex.Store({
         ACTION_POSTS_DATA({ commit }) {
             console.log('ACTION_POSTS_DATA works');
             axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts?limit=10000")
-                .then((response) => { commit('SET_POSTS_DATA', response.data) 
-                // state.getPosts.map(item =>{ item.name = response.data.postedBy}) 
-                // = response.map(item => {
-                //     item.name = 'test'
-                //     return item
-                // }) 
-            });
-         
+                .then((response) => {
+                    commit('SET_POSTS_DATA', response.data)
+                    // state.getPosts.map(item =>{ item.name = response.data.postedBy}) 
+                    // = response.map(item => {
+                    //     item.name = 'test'
+                    //     return item
+                    // }) 
+                });
+
         },
-        async ACTION_POST_DATA({ commit, state }, index) {
+        ACTION_POST_DATA({ commit, state }, index) {
+
             console.log('ACTION_POST_DATA works');
-            await axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + state.getPosts[index]._id)
+            axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts/" + state.getPosts[index]._id)
                 .then((response) => { commit('SET_POST_DATA', response.data), state.getPosts[index].fullText = response.data.fullText, state.getPosts[index].dateCreated = response.data.dateCreated, state.getPosts[index].likes = response.data.likes });
-        },
-        async ACTION_USER_DATA({ commit, state }, index) {
+           
             console.log('ACTION_USER_DATA works');
-           await axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/users/" + state.getPosts[index].postedBy)
+            axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/users/" + state.getPosts[index].postedBy)
                 .then((response) => { commit('SET_USER_DATA', response.data), state.getPosts[index].name = response.data.name });
         },
-        ACTION_CREATE_POST({ commit }) {
+        // ACTION_USER_DATA({ commit, state }, index) {
+            // console.log('ACTION_USER_DATA works');
+            // axios.get("https://nodejs-test-api-blog.herokuapp.com/api/v1/users/" + state.getPosts[index].postedBy)
+            //     .then((response) => { commit('SET_USER_DATA', response.data), state.getPosts[index].name = response.data.name });
+        // },
+        ACTION_CREATE_POST({ commit, state }) {
             console.log('ACTION_CREATE_POST works');
             // console.log(state.createPost.title)
-            let postData = {
-                title: "title UUUUUUUUUUU",
-                fullText: "fullText GGGGGGGGGGGGG",
-                description: "description FFFFFFFFFF"
-            }
-            axios.post("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts", postData, {
+            axios.post("https://nodejs-test-api-blog.herokuapp.com/api/v1/posts", state.createPost, {
                 headers: { authorization: localStorage.token },
             }).then((response) => { commit('SET_CREATE_POST', response.data) });
+            },
+        
+
         },
 
 
-    },
     modules: {},
 
     getters: {
