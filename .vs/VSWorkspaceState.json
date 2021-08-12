@@ -3,7 +3,10 @@
     "",
     "\\public",
     "\\src",
+    "\\src\\router",
+    "\\src\\store",
     "\\src\\views"
   ],
+  "SelectedNode": "\\src\\router\\index.js",
   "PreviewInSolutionExplorer": false
 }

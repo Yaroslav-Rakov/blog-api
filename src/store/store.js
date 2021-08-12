@@ -70,7 +70,7 @@ export default new Vuex.Store({
             console.log('ACTION_LOGIN works');
             axios
                 .post("https://nodejs-test-api-blog.herokuapp.com/api/v1/auth", state.userLogin)
-                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token, state.authToken = response.data.token })
+                .then((response) => { commit('SET_TOKEN', response.data.token), localStorage.token = response.data.token, state.authToken = response.data.token, state.token = response.data.token })
                 .catch((error) => {
                     console.error("There was an error!", error);
 
